@@ -1,5 +1,5 @@
 #pragma once
-#include"Controller.h"
+#include"View.h"
 
 class Model
 {
@@ -8,6 +8,10 @@ class Model
 public:
 	Model();
 
+	bool *get_type_of_comand() { return type_of_comand; };
+	bool *get_type_of_operand() { return type_of_operand; };
+
+	bool probability(float dat);
 	int find_middle_time_pipeline();
 
 	

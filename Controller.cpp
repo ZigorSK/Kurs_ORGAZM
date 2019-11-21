@@ -1,27 +1,5 @@
-
 #include "Controller.h"
 
-bool Controller::probability(float prob)
-{
-	bool arr[10];
-	int choice = 0;
-	srand(time(NULL));
-	for (int i = 0; i < 9; i++)
-	{
-		if (prob > 0)
-		{
-			*(arr + i) = true;
-		}
-		else
-		{
-			*(arr + i) = false;
-		}
-		prob -= 0.1;
-	}
-
-	choice = round(rand() % 10);
-	return *(arr + choice);
-}
 
 int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_operand, int num)
 {
@@ -72,6 +50,7 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 		count++;//регистр
 	}
 
+
 	//Запись данных(Во 2-й операнд)
 	if (type_of_operand == true)
 	{
@@ -93,4 +72,17 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 		count++;//регистр
 	}
 	return count;
+}
+
+int Controller::find_middle_time_pipeline()
+{
+	float middle_time = 0;
+	
+	for (int i = 0; i < 3; i++)
+		middle_time +=( find_pipeline_comand_time(*(obg1.get_type_of_comand() + i), *(obg1.get_type_of_operand() + i), i));
+
+	middle_time = middle_time / 3;
+
+	return middle_time;
+	
 }
