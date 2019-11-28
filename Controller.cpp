@@ -6,10 +6,11 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	int count = 0;
 
 	count++;//чтение и дешифрация
+
 	count++;// выбор первого операнда(регистр)
 
 	//обращение ко 2 операнду
-	if (type_of_operand == true)
+	if (!type_of_operand)
 	{
 		switch (num)
 		{
@@ -30,7 +31,7 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	}
 
 	//Выполнение команды
-	if (type_of_comand == true)
+	if (!type_of_comand)//команда второго типа, выполнряется за (4, 8, 16) тактов
 	{
 		switch (num)
 		{
@@ -47,12 +48,12 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	}
 	else
 	{
-		count++;//регистр
+		count++;//Команда 1-го типа, выполняется за 1 такт
 	}
 
 
-	//Запись данных(Во 2-й операнд)
-	if (type_of_operand == true)
+	//Запись данных по адресу второго операнда
+	if (!type_of_operand)
 	{
 		switch (num)
 		{
@@ -71,18 +72,74 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	{
 		count++;//регистр
 	}
+
 	return count;
+}
+
+Controller::Controller()
+{
+	int n = 0;
+
+	std::cout << "Введите количество циклов работы конвеера, для получения более точной оценки среднего времени работы: " << std::endl;
+	std::cin >> n;
+	N = n;
+	srand(time(NULL));
+
+	arr_of_pipeline = new Model[n];
+}
+
+Controller::~Controller()
+{
+	delete[] arr_of_pipeline;
 }
 
 int Controller::find_middle_time_pipeline()
 {
-	float middle_time = 0;
-	
-	for (int i = 0; i < 3; i++)
-		middle_time +=( find_pipeline_comand_time(*(obg1.get_type_of_comand() + i), *(obg1.get_type_of_operand() + i), i));
+	double middle_time[3] = {0, 0, 0};
+	double count = 0;
 
-	middle_time = middle_time / 3;
+	for (int i = 0; i< N; i++)
+	{
+		middle_time[0] = 0;
+		middle_time[1] = 0;
+		middle_time[2] = 0;
 
-	return middle_time;
-	
+		for (int j = 0; j < 3; j++)
+		{
+			middle_time[j] += (find_pipeline_comand_time(*(arr_of_pipeline[i].get_type_of_comand() + j), *(arr_of_pipeline[i].get_type_of_operand() + j), j));
+		}
+		middle_time[1]++;
+		middle_time[2] += 2;
+		//
+
+		if (middle_time[0] > middle_time[1])
+		{
+			if (middle_time[0] > middle_time[2])
+			{
+				//0
+				count += middle_time[0];
+			}
+			else
+			{
+				//2
+				count += middle_time[2];
+			}
+		}
+		else
+		{
+			if (middle_time[1] > middle_time[2])
+			{
+				//1
+				count += middle_time[1];
+			}
+			else
+			{
+				//2
+				count += middle_time[2];
+			}
+		}
+	}
+	std::cout << count << std::endl;
+	system("pause");
+	return round( count/N +0.5 );
 }

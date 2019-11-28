@@ -3,7 +3,6 @@
 #include <stdlib.h>
 Model::Model()
 {
-
 	//init type of comand
 	type_of_comand[0] = probability(0.9);
 	type_of_comand[1] = probability(0.7);
@@ -33,5 +32,6 @@ bool Model::probability(float prob)
 	}
 	
 	choice = rand() % 10;
+
 	return *(arr + choice);
 }
