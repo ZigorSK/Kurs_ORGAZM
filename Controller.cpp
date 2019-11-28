@@ -5,11 +5,11 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 {
 	int count = 0;
 
-	count++;//чтение и дешифрация
+	count++;//С‡С‚РµРЅРёРµ Рё РґРµС€РёС„СЂР°С†РёСЏ
 
-	count++;// выбор первого операнда(регистр)
+	count++;// РІС‹Р±РѕСЂ РїРµСЂРІРѕРіРѕ РѕРїРµСЂР°РЅРґР°(СЂРµРіРёСЃС‚СЂ)
 
-	//обращение ко 2 операнду
+	//РѕР±СЂР°С‰РµРЅРёРµ РєРѕ 2 РѕРїРµСЂР°РЅРґСѓ
 	if (!type_of_operand)
 	{
 		switch (num)
@@ -27,11 +27,11 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	}
 	else
 	{
-		count++;//регистр
+		count++;//СЂРµРіРёСЃС‚СЂ
 	}
 
-	//Выполнение команды
-	if (!type_of_comand)//команда второго типа, выполнряется за (4, 8, 16) тактов
+	//Р’С‹РїРѕР»РЅРµРЅРёРµ РєРѕРјР°РЅРґС‹
+	if (!type_of_comand)//РєРѕРјР°РЅРґР° РІС‚РѕСЂРѕРіРѕ С‚РёРїР°, РІС‹РїРѕР»РЅСЂСЏРµС‚СЃСЏ Р·Р° (4, 8, 16) С‚Р°РєС‚РѕРІ
 	{
 		switch (num)
 		{
@@ -48,11 +48,11 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	}
 	else
 	{
-		count++;//Команда 1-го типа, выполняется за 1 такт
+		count++;//РљРѕРјР°РЅРґР° 1-РіРѕ С‚РёРїР°, РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ Р·Р° 1 С‚Р°РєС‚
 	}
 
 
-	//Запись данных по адресу второго операнда
+	//Р—Р°РїРёСЃСЊ РґР°РЅРЅС‹С… РїРѕ Р°РґСЂРµСЃСѓ РІС‚РѕСЂРѕРіРѕ РѕРїРµСЂР°РЅРґР°
 	if (!type_of_operand)
 	{
 		switch (num)
@@ -70,7 +70,7 @@ int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_oper
 	}
 	else
 	{
-		count++;//регистр
+		count++;//СЂРµРіРёСЃС‚СЂ
 	}
 
 	return count;
@@ -80,7 +80,7 @@ Controller::Controller()
 {
 	int n = 0;
 
-	std::cout << "Введите количество циклов работы конвеера, для получения более точной оценки среднего времени работы: " << std::endl;
+	std::cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ С†РёРєР»РѕРІ СЂР°Р±РѕС‚С‹ РєРѕРЅРІРµРµСЂР°, РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р±РѕР»РµРµ С‚РѕС‡РЅРѕР№ РѕС†РµРЅРєРё СЃСЂРµРґРЅРµРіРѕ РІСЂРµРјРµРЅРё СЂР°Р±РѕС‚С‹: " << std::endl;
 	std::cin >> n;
 	N = n;
 	srand(time(NULL));
@@ -118,11 +118,15 @@ int Controller::find_middle_time_pipeline()
 			{
 				//0
 				count += middle_time[0];
+				//std::cout << middle_time[0] << std::endl;
+				//system("pause");
 			}
 			else
 			{
 				//2
 				count += middle_time[2];
+				//std::cout << middle_time[2] << std::endl;
+				//system("pause");
 			}
 		}
 		else
@@ -131,15 +135,19 @@ int Controller::find_middle_time_pipeline()
 			{
 				//1
 				count += middle_time[1];
+				//std::cout << middle_time[1] << std::endl;
+				//system("pause");
 			}
 			else
 			{
 				//2
 				count += middle_time[2];
+				//std::cout << middle_time[2] << std::endl;
+				//system("pause");
 			}
 		}
 	}
-	std::cout << count << std::endl;
-	system("pause");
+	//std::cout << count << std::endl;
+	//system("pause");
 	return round( count/N +0.5 );
 }
