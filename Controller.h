@@ -3,6 +3,11 @@
 #include<cstdlib>
 #include<ctime>
 #include<iostream>
+#include<string>
+#include<iomanip>
+#include<fstream>
+
+using namespace std;
 
 class Controller
 {
@@ -13,6 +18,9 @@ public:
 	Controller();
 	~Controller();
 
-	int find_middle_time_pipeline();
-	int find_pipeline_comand_time(bool type_of_comand, bool type_of_operand, int num);
+	int get_num() { return N; };
+
+	int find_pipeline_comand_time(int num);
+
+	int maxim(int t1, int t2, int t3);
 };

@@ -1,153 +1,163 @@
 #include "Controller.h"
 
 
-int Controller::find_pipeline_comand_time(bool type_of_comand, bool type_of_operand, int num)
+int Controller::find_pipeline_comand_time(int num)
 {
-	int count = 0;
+		int count = 0;
+		int t1 = 0, t2 = 0, t3 = 0;
+		count++;//чтение и дешифрация(Одновременно)
 
-	count++;//С‡С‚РµРЅРёРµ Рё РґРµС€РёС„СЂР°С†РёСЏ
+		count++;// выбор первого операнда(регистр) (Одновременно)
 
-	count++;// РІС‹Р±РѕСЂ РїРµСЂРІРѕРіРѕ РѕРїРµСЂР°РЅРґР°(СЂРµРіРёСЃС‚СЂ)
-
-	//РѕР±СЂР°С‰РµРЅРёРµ РєРѕ 2 РѕРїРµСЂР°РЅРґСѓ
-	if (!type_of_operand)
-	{
-		switch (num)
+		//обращение ко 2 операнду(Одновременно, т.е. выбираем мах из 3-х
+		//middle_time[j] += (find_pipeline_comand_time(*(arr_of_pipeline[i].get_type_of_comand() + j), *(arr_of_pipeline[i].get_type_of_operand() + j), j));
+		//Для первой операции
+		if (!(*(arr_of_pipeline[num].get_type_of_operand())))
 		{
-		case 0:
-			count += 2;
-			break;
-		case 1:
-			count += 5;
-			break;
-		case 2:
-			count += 10;
-			break;
+			t1 = 2;
 		}
-	}
-	else
-	{
-		count++;//СЂРµРіРёСЃС‚СЂ
-	}
-
-	//Р’С‹РїРѕР»РЅРµРЅРёРµ РєРѕРјР°РЅРґС‹
-	if (!type_of_comand)//РєРѕРјР°РЅРґР° РІС‚РѕСЂРѕРіРѕ С‚РёРїР°, РІС‹РїРѕР»РЅСЂСЏРµС‚СЃСЏ Р·Р° (4, 8, 16) С‚Р°РєС‚РѕРІ
-	{
-		switch (num)
+		else
 		{
-		case 0:
-			count += 4;
-			break;
-		case 1:
+			t1 = 1;//регистр
+		}
+
+		//Для второй операции
+		if (!(*(arr_of_pipeline[num].get_type_of_operand()) + 1))
+		{
+			t2 = 5;
+		}
+		else
+		{
+			t2 = 1;//регистр
+		}
+
+		//Для 3-й операции 
+		if (!(*(arr_of_pipeline[num].get_type_of_operand()) + 2))
+		{
+			t3 = 10;
+		}
+		else
+		{
+			t3 = 1;//регистр
+		}
+
+		count += maxim(t1, t2, t3);//Т.к. одновременно, то находим максимум из 3-х
+
+		//Выполнение команды ( Не одновременно) поэтмоу выполняется за суммарное количество тактов
+		if (!(*(arr_of_pipeline[num].get_type_of_comand() + 0)))//команда второго типа, выполнряется за (4, 8, 16) тактов
+		{
+			count +=4;
+		}
+		else
+		{
+			count++;//Команда 1-го типа, выполняется за 1 такт
+		}
+
+		if (!(*(arr_of_pipeline[num].get_type_of_comand() + 1)))//команда второго типа, выполнряется за (4, 8, 16) тактов
+		{
 			count += 8;
-			break;
-		case 2:
-			count += 16;
-			break;
 		}
-	}
-	else
-	{
-		count++;//РљРѕРјР°РЅРґР° 1-РіРѕ С‚РёРїР°, РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ Р·Р° 1 С‚Р°РєС‚
-	}
-
-
-	//Р—Р°РїРёСЃСЊ РґР°РЅРЅС‹С… РїРѕ Р°РґСЂРµСЃСѓ РІС‚РѕСЂРѕРіРѕ РѕРїРµСЂР°РЅРґР°
-	if (!type_of_operand)
-	{
-		switch (num)
+		else
 		{
-		case 0:
-			count += 2;
-			break;
-		case 1:
-			count += 5;
-			break;
-		case 2:
-			count += 10;
-			break;
+			count++;//Команда 1-го типа, выполняется за 1 такт
 		}
-	}
-	else
-	{
-		count++;//СЂРµРіРёСЃС‚СЂ
-	}
+
+		if (!(*(arr_of_pipeline[num].get_type_of_comand() + 2)))//команда второго типа, выполнряется за (4, 8, 16) тактов
+		{
+			count += 16;
+		}
+		else
+		{
+			count++;//Команда 1-го типа, выполняется за 1 такт
+		}
+
+		//Запись данных по адресу второго операнда (одновременно, поэтому рассматривам максимальное)
+		if (!(*(arr_of_pipeline[num].get_type_of_operand())))
+		{
+			t1 = 2;
+		}
+		else
+		{
+			t1 = 1;//регистр
+		}
+
+		//Для второй операции
+		if (!(*(arr_of_pipeline[num].get_type_of_operand()) + 1))
+		{
+			t2 = 5;
+		}
+		else
+		{
+			t2 = 1;//регистр
+		}
+
+		//Для 3-й операции 
+		if (!(*(arr_of_pipeline[num].get_type_of_operand()) + 2))
+		{
+			t3 = 10;
+		}
+		else
+		{
+			t3 = 1;//регистр
+		}
+
+		count += maxim(t1, t2, t3);//Т.к. одновременно, то находим максимум из 3-х
 
 	return count;
 }
 
+int Controller::maxim(int t1, int t2, int t3)
+{
+	if (t1 > t2)
+	{
+		if (t1 > t3)
+		{
+			return t1;
+		}
+		else//t3>t1
+		{
+			return t3;
+		}
+	}
+	else//t2>t1
+	{
+		if (t2 > t3)
+		{
+			return t2;
+		}
+		else
+		{
+			return t3;
+		}
+	}
+}
+
 Controller::Controller()
 {
-	int n = 0;
+	int n = 1;
 
-	std::cout << "Р’РІРµРґРёС‚Рµ РєРѕР»РёС‡РµСЃС‚РІРѕ С†РёРєР»РѕРІ СЂР°Р±РѕС‚С‹ РєРѕРЅРІРµРµСЂР°, РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р±РѕР»РµРµ С‚РѕС‡РЅРѕР№ РѕС†РµРЅРєРё СЃСЂРµРґРЅРµРіРѕ РІСЂРµРјРµРЅРё СЂР°Р±РѕС‚С‹: " << std::endl;
-	std::cin >> n;
-	N = n;
+	try
+	{
+		std::cout << "Введите количество циклов работы конвеера, для получения более точной оценки среднего времени работы: " << std::endl;
+		std::cin >> n;
+		if (n < 1)
+			throw n;
+		N = n;
+	}
+	catch(int n)
+	{
+		std::cout << "Введённое значение меньше 1 = " << n <<"Количество прогонов конвеера будет равно 1." <<std::endl;
+		system("pause");
+		system("cls");
+		N = 1;
+	}
 	srand(time(NULL));
 
-	arr_of_pipeline = new Model[n];
+	arr_of_pipeline = new Model[N];
+
 }
 
 Controller::~Controller()
 {
 	delete[] arr_of_pipeline;
-}
-
-int Controller::find_middle_time_pipeline()
-{
-	double middle_time[3] = {0, 0, 0};
-	double count = 0;
-
-	for (int i = 0; i< N; i++)
-	{
-		middle_time[0] = 0;
-		middle_time[1] = 0;
-		middle_time[2] = 0;
-
-		for (int j = 0; j < 3; j++)
-		{
-			middle_time[j] += (find_pipeline_comand_time(*(arr_of_pipeline[i].get_type_of_comand() + j), *(arr_of_pipeline[i].get_type_of_operand() + j), j));
-		}
-		middle_time[1]++;
-		middle_time[2] += 2;
-		//
-
-		if (middle_time[0] > middle_time[1])
-		{
-			if (middle_time[0] > middle_time[2])
-			{
-				//0
-				count += middle_time[0];
-				//std::cout << middle_time[0] << std::endl;
-				//system("pause");
-			}
-			else
-			{
-				//2
-				count += middle_time[2];
-				//std::cout << middle_time[2] << std::endl;
-				//system("pause");
-			}
-		}
-		else
-		{
-			if (middle_time[1] > middle_time[2])
-			{
-				//1
-				count += middle_time[1];
-				//std::cout << middle_time[1] << std::endl;
-				//system("pause");
-			}
-			else
-			{
-				//2
-				count += middle_time[2];
-				//std::cout << middle_time[2] << std::endl;
-				//system("pause");
-			}
-		}
-	}
-	//std::cout << count << std::endl;
-	//system("pause");
-	return round( count/N +0.5 );
 }
