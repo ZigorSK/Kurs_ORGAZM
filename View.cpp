@@ -13,7 +13,7 @@ int Vie::find_middle_time_pipeline()
 
 	Texture myTexture;
 	myTexture.loadFromImage(myBackground);
-	//system("pause");
+	
 	//Создаем спрайт, загружаем в него текстуру, устанавливаем положение
 	Sprite mySprite;
 	mySprite.setTexture(myTexture);
@@ -35,13 +35,15 @@ int Vie::find_middle_time_pipeline()
 		file_ptr_outPut << setw(3) << val << " тактов для " << i + 1 << "-го прогона конвеера. " << endl;//Документированиев файл Result.txt
 		cout<< setw(3) << val << " тактов для " << i + 1 << "-го прогона конвеера. " << endl;
 	}
+	cout << endl << "Среднее время выполнения команды конвеера: " << round(count / N + 0.5);
+
 	//создаем массив точек, по которым будут рисоваться линии:
 	sf::VertexArray lines(sf::Lines, 2 /*количество точек*/);
 	//далее для каждой точки указываем цвет:
 	lines[0].color = sf::Color::Blue;
 	lines[1].color = sf::Color::Red;
 
-	int width = (int)(1170 - 62) / N;//Ширина м-у 2 прогонами по оси х
+	int width = (int)((1170 - 62) / N );//Ширина м-у 2 прогонами по оси х
 	int height = (int)(535 - 250) / 20;
 	//т. начала графика - (62,535)
 	//конец оси х (1170, 535)
@@ -88,6 +90,4 @@ int Vie::find_middle_time_pipeline()
 	file_ptr_outPut.close();
 	
 	return round(count / N + 0.5);
-
-	
 }

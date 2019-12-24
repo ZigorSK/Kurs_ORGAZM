@@ -20,9 +20,10 @@ int main()
 	setlocale(LC_ALL, "Rus");
 
 	Vie obg;
-	system("cls");
-	std::cout << std::endl << "Среднее время выполнения команды конвеера: " << obg.find_middle_time_pipeline() << std::endl << std::endl;
-	system("pause");
 
+	system("cls");
+	obg.find_middle_time_pipeline();
+
+	system("pause");
 	return 0;
 }
